@@ -28,4 +28,6 @@ def run(self):
  
             choice = input(f"{name}!!Enter your choice (1 to 5): ")
 
-    
+     if choice == "1":
+                self.translate_text()
+            elif choice== "4":
