@@ -20,4 +20,12 @@ class LanguageTranslatorAPP:
 
         print(f"\nOriginal Text ({source_lang}): {text}")
         print(f"Translation ({target_lang}): {translation.text}\n")
+def run(self):
+        while True:
+             
+            self.display_menu()
+            name= input("Welcome again on TourLingo!!! We are here for you. what is your name:")
+ 
+            choice = input(f"{name}!!Enter your choice (1 to 5): ")
 
+    
