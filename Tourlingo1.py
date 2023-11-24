@@ -31,3 +31,7 @@ def run(self):
      if choice == "1":
                 self.translate_text()
             elif choice== "4":
+                  print("Thank you for using TourLingo,any time we are here to assist")
+                break
+            else:
+                print("Invalid choice. Please enter a number from 1 to 5.")
