@@ -6,6 +6,8 @@ class LanguageTranslatorAPP:
         self.user_progress={'translations_completed': '0'}
         
     def display_menu(self):
+        print("Welcome to TOURLINGO here is the MENU")
+        print("1. Translate Text")
         
 
     def translate_text(self):
