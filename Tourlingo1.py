@@ -21,17 +21,16 @@ class LanguageTranslatorAPP:
         print(f"\nOriginal Text ({source_lang}): {text}")
         print(f"Translation ({target_lang}): {translation.text}\n")
 def run(self):
-        while True:
-             
-            self.display_menu()
-            name= input("Welcome again on TourLingo!!! We are here for you. what is your name:")
+    while True:
+        self.display_menu()
+        name = input("Welcome again on TourLingo!!! We are here for you. What is your name:")
  
-            choice = input(f"{name}!!Enter your choice (1 to 5): ")
+        choice = input(f"{name}!! Enter your choice (1 to 5): ")
 
-     if choice == "1":
-                self.translate_text()
-            elif choice== "4":
-                  print("Thank you for using TourLingo,any time we are here to assist")
-                break
-            else:
-                print("Invalid choice. Please enter a number from 1 to 5.")
+        if choice == "1":
+            self.translate_text()
+        elif choice == "4":
+            print("Thank you for using TourLingo, any time we are here to assist.")
+            break
+        else:
+            print("Invalid choice. Please enter a number from 1 to 5.")
