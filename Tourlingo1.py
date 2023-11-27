@@ -8,7 +8,9 @@ class LanguageTranslatorAPP:
     def display_menu(self):
         print("Welcome to TOURLINGO here is the MENU")
         print("1. Translate Text")
-        
+        print("2. Language Quiz")
+        print("3. User Progress")
+        print("4. Exit")
 
     def translate_text(self):
         text= input("Enter the text you wish to translate:")
