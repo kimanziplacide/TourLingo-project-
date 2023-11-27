@@ -1,5 +1,5 @@
- This is the project intended to make an app which is a translator. We called it TourLingo
- TourLingo has 4 options in its menu which are:
+# This is the project intended to make an app which is a translator. We called it TourLingo
+## TourLingo has 4 options in its menu which are:
  1. translate_text
  2. language_quiz
  3. user_progress
