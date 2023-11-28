@@ -25,7 +25,6 @@ class LanguageTranslatorAPP:
 
         print(f"\nOriginal Text ({source_lang}): {text}")
         print(f"Translation ({target_lang}): {translation.text}\n")
-
     def run(self):
         while True:
             self.display_menu()
