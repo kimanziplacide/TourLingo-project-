@@ -34,3 +34,11 @@ def run(self):
             break
         else:
             print("Invalid choice. Please enter a number from 1 to 5.")
+        while True:
+            try:
+                source_lang = input("Enter the source language (e.g., en for English): ")
+                target_lang = input("Enter the target language (e.g., es for Spanish): ")
+                translation = self.translator.translate(text, src=source_lang, dest=target_lang)
+                break  # Break out of the loop if translation is successful
+            except ValueError:
+                print("Please, these language codes are not valid. Try again.")
