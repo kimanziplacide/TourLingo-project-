@@ -18,7 +18,7 @@ class LanguageTranslatorAPP:
 
     def create_user(self, username, password):
         cursor = self.db_connection.cursor()
-query = "INSERT INTO data (username, password, translations_completed) VALUES (%s, %s, 0)"
+        query = "INSERT INTO data (username, password, translations_completed) VALUES (%s, %s, 0)"
         values = (username, password)
         cursor.execute(query, values)
         self.db_connection.commit()
