@@ -8,6 +8,13 @@ class LanguageTranslatorAPP:
         self.db_connection= self.initialize_database()
         self.user_progress={'translations_completed': '0'}
 
+    def initialize_database(self):
+        return mysql.connector.connect(
+            host="localhost",
+            user="kabisa",
+            password="Argentina@10",
+            database="tourlingodbs"
+        )
     def display_menu(self):
         print("Welcome to TOURLINGO here is the MENU")
         print("1. Translate Text")
