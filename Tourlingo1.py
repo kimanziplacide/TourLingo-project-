@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 from googletrans import Translator
+import mysql.connector
+
 class LanguageTranslatorAPP:
     def __init__(self):
         self.translator= Translator()
+        self.db_connection= self.initialize_database()
         self.user_progress={'translations_completed': '0'}
         
     def display_menu(self):
