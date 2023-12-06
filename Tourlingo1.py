@@ -31,6 +31,10 @@ class LanguageTranslatorAPP:
         user_data = cursor.fetchone()
         cursor.close()
         return user_data
+    def update_translations_completed(self, username):
+        cursor = self.db_connection.cursor()
+        query_select = "SELECT translations_completed FROM data WHERE username = %s"
+        values_select = (username,)
     def display_menu(self):
         print("Welcome to TOURLINGO here is the MENU")
         print("1. Translate Text")
