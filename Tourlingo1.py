@@ -23,6 +23,14 @@ class LanguageTranslatorAPP:
         cursor.execute(query, values)
         self.db_connection.commit()
         cursor.close()
+    def authenticate_user(self, username, password):
+        cursor = self.db_connection.cursor()
+        query = "SELECT * FROM data WHERE username=%s AND password=%s"
+        values = (username, password)
+        cursor.execute(query, values)
+        user_data = cursor.fetchone()
+        cursor.close()
+        return user_data
     def display_menu(self):
         print("Welcome to TOURLINGO here is the MENU")
         print("1. Translate Text")
