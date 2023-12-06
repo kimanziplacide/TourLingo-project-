@@ -15,6 +15,10 @@ class LanguageTranslatorAPP:
             password="Argentina@10",
             database="tourlingodbs"
         )
+
+    def create_user(self, username, password):
+        cursor = self.db_connection.cursor()
+
     def display_menu(self):
         print("Welcome to TOURLINGO here is the MENU")
         print("1. Translate Text")
