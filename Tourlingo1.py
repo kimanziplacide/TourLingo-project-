@@ -1,36 +1,63 @@
-#!/usr/bin/python3
 from googletrans import Translator
+import mysql.connector
+from mysql.connector import Error
+
 class LanguageTranslatorAPP:
-    def __init__(self):
-        self.translator= Translator()
-        self.user_progress={'translations_completed': '0'}
-        
-    def display_menu(self):
-        print("Welcome to TOURLINGO here is the MENU")
-        print("1. Translate Text")
-        print("2. Language Quiz")
-        print("3. User Progress")
-        print("4. Exit")
+    def _init_(self):
+        self.translator = Translator()
+        self.db_connection = self.initialize_database()
+        self.current_user = None  # Keep track of the current user
+        self.current_user_id = None  # Keep track of the current user's ID
 
-    def translate_text(self):
-        text= input("Enter the text you wish to translate:")
-        source_lang = input("Enter the source language (e.g., en for English): ")
-        target_lang = input("Enter the target language (e.g., es for Spanish): ")
-        translation= self.translator.translate(text, src=source_lang, dest=target_lang)
+    # Initialization method to connect to the database
+    def initialize_database(self):
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="kabisa",
+                password="Argentina@10",
+                database="tourlingodbs"
+            )
+            return connection
+        except Error as e:
+            print(f"Error connecting to the database: {e}")
+            raise
 
-        print(f"\nOriginal Text ({source_lang}): {text}")
-        print(f"Translation ({target_lang}): {translation.text}\n")
-def run(self):
-    while True:
-        self.display_menu()
-        name = input("Welcome again on TourLingo!!! We are here for you. What is your name:")
- 
-        choice = input(f"{name}!! Enter your choice (1 to 5): ")
+    # Method to create a new user and insert into both tables
+    def create_user(self, username, password):
+        try:
+            cursor = self.db_connection.cursor()
 
-        if choice == "1":
-            self.translate_text()
-        elif choice == "4":
-            print("Thank you for using TourLingo, any time we are here to assist.")
-            break
-        else:
-            print("Invalid choice. Please enter a number from 1 to 5.")
+            # Insert into data table
+            query_data = "INSERT INTO data (username, password) VALUES (%s, %s)"
+            values_data = (username, password)
+            cursor.execute(query_data, values_data)
+            self.db_connection.commit()
+
+            # Get the last inserted ID (auto-incremented primary key)
+            user_id = cursor.lastrowid
+
+            # Insert into user_progress table with the same ID
+            query_progress = "INSERT INTO user_progress (id, translations_completed) VALUES (%s, 0)"
+            values_progress = (user_id,)
+            cursor.execute(query_progress, values_progress)
+            self.db_connection.commit()
+
+            cursor.close()
+            print("User created successfully!")
+        except Error as e:
+            print(f"Error creating user: {e}")
+
+    # Method to authenticate a user
+    def authenticate_user(self, username, password):
+        try:
+            cursor = self.db_connection.cursor()
+            query = "SELECT id FROM data WHERE username=%s AND password=%s"
+            values = (username, password)
+            cursor.execute(query, values)
+            user_data = cursor.fetchone()
+            cursor.close()
+            return user_data[0] if user_data else None
+        except Error as e:
+            print(f"Error authenticating user: {e}")
+            return None
