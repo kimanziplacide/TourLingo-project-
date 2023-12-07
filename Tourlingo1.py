@@ -98,3 +98,9 @@ class LanguageTranslatorAPP:
         username_to_authenticate = input("Enter your username for authentication: ")
         password_to_authenticate = input("Enter your password for authentication: ")
         authenticated_user_id = self.authenticate_user(username_to_authenticate, password_to_authenticate)    
+        if authenticated_user_id is not None:
+            print("Login successful!")
+            self.current_user = username_to_authenticate
+            self.current_user_id = authenticated_user_id
+        else:
+            print("Authentication failed. Check your credentials.")
