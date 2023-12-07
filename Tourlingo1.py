@@ -82,3 +82,14 @@ class LanguageTranslatorAPP:
             values_select = (user_id,)
             cursor.execute(query_select, values_select)
             progress_row = cursor.fetchone()
+        if progress_row is not None:
+                current_translations_completed = progress_row[0]
+                cursor.close()
+                return current_translations_completed
+            else:
+                print("No progress found.")
+                cursor.close()
+                return 0  # Default progress assumed to be 0 if no data found
+        except Error as e:
+            print(f"Error getting user progress: {e}")
+            return None    
