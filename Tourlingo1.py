@@ -104,3 +104,11 @@ class LanguageTranslatorAPP:
             self.current_user_id = authenticated_user_id
         else:
             print("Authentication failed. Check your credentials.")
+
+            # Method to translate text for a logged-in user
+    def translate_text(self):
+        if not self.current_user:
+            print("You need to log in first.")
+            return
+
+        text = input("Enter the text you wish to translate: ")
