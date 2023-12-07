@@ -61,3 +61,15 @@ class LanguageTranslatorAPP:
         except Error as e:
             print(f"Error authenticating user: {e}")
             return None
+        # Method to update translations completed for a user
+    def update_translations_completed(self, user_id):
+        try:
+            cursor = self.db_connection.cursor()
+            query_update = "UPDATE user_progress SET translations_completed = translations_completed + 1 WHERE id = %s"
+            values_update = (user_id,)
+            cursor.execute(query_update, values_update)
+            self.db_connection.commit()
+            cursor.close()
+            print("Translations completed!")
+        except Error as e:
+            print(f"Error updating translations completed: {e}")
