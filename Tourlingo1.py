@@ -92,4 +92,9 @@ class LanguageTranslatorAPP:
                 return 0  # Default progress assumed to be 0 if no data found
         except Error as e:
             print(f"Error getting user progress: {e}")
-            return None    
+            return None
+    # Method to log in a user
+    def login(self):
+        username_to_authenticate = input("Enter your username for authentication: ")
+        password_to_authenticate = input("Enter your password for authentication: ")
+        authenticated_user_id = self.authenticate_user(username_to_authenticate, password_to_authenticate)    
