@@ -73,3 +73,12 @@ class LanguageTranslatorAPP:
             print("Translations completed!")
         except Error as e:
             print(f"Error updating translations completed: {e}")
+
+            # Method to get user's progress
+    def get_user_progress(self, user_id):
+        try:
+            cursor = self.db_connection.cursor()
+            query_select = "SELECT translations_completed FROM user_progress WHERE id = %s"
+            values_select = (user_id,)
+            cursor.execute(query_select, values_select)
+            progress_row = cursor.fetchone()
