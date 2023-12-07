@@ -93,6 +93,7 @@ class LanguageTranslatorAPP:
         except Error as e:
         print(f"Error getting user progress: {e}")
         return None
+    
 
            
     # Method to log in a user
@@ -114,3 +115,12 @@ class LanguageTranslatorAPP:
             return
 
         text = input("Enter the text you wish to translate: ")
+
+        while True:
+            try:
+                source_lang = input("Enter the source language (e.g., en for English): ")
+                target_lang = input("Enter the target language (e.g., es for Spanish): ")
+                translation = self.translator.translate(text, src=source_lang, dest=target_lang)
+                break  # Break out of the loop if translation is successful
+            except ValueError:
+                print("Please, these language abbreviations are not valid. Try again.")
