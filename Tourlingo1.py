@@ -86,13 +86,15 @@ class LanguageTranslatorAPP:
                 current_translations_completed = progress_row[0]
                 cursor.close()
                 return current_translations_completed
-            else:
-                print("No progress found.")
-                cursor.close()
-                return 0  # Default progress assumed to be 0 if no data found
+        else:
+            print("No progress found.")
+        cursor.close()
+        return 0  # Default progress assumed to be 0 if no data found
         except Error as e:
-            print(f"Error getting user progress: {e}")
-            return None
+        print(f"Error getting user progress: {e}")
+        return None
+
+           
     # Method to log in a user
     def login(self):
         username_to_authenticate = input("Enter your username for authentication: ")
