@@ -1,3 +1,75 @@
+from googletrans import Translator
+import mysql.connector
+from mysql.connector import Error
+
+class LanguageTranslatorAPP:
+    def __init__(self):
+        self.translator = Translator()
+        self.db_connection = self.initialize_database()
+        self.current_user = None  # Keep track of the current user
+        self.current_user_id = None  # Keep track of the current user's ID
+
+    # Initialization method to connect to the database
+    def initialize_database(self):
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="kabisa",
+                password="Argentina@10",
+                database="tourlingodbs"
+            )
+            return connection
+        except Error as e:
+            print(f"Error connecting to the database: {e}")
+            raise
+
+    # Function to print visual borders
+    def print_visual_border(self):
+        print("------------------------------")
+
+    # Method to create a new user and insert into both tables
+    def create_user(self, username, password):
+        try:
+            cursor = self.db_connection.cursor()
+
+            # Insert into data table
+            query_data = "INSERT INTO data (username, password) VALUES (%s, %s)"
+            values_data = (username, password)
+            cursor.execute(query_data, values_data)
+            self.db_connection.commit()
+
+            # Get the last inserted ID (auto-incremented primary key)
+            user_id = cursor.lastrowid
+
+            # Insert into user_progress table with the same ID
+            query_progress = "INSERT INTO user_progress (id, translations_completed) VALUES (%s, 0)"
+            values_progress = (user_id,)
+            cursor.execute(query_progress, values_progress)
+            self.db_connection.commit()
+
+            # Consume any pending results
+            cursor.fetchall()
+
+            cursor.close()
+            self.print_visual_border()
+            print("User created successfully!")
+            self.print_visual_border()
+        except Error as e:
+            print(f"Error creating user: {e}")
+
+    # Method to authenticate a user
+    def authenticate_user(self, username, password):
+        try:
+            cursor = self.db_connection.cursor()
+            query = "SELECT id FROM data WHERE username=%s AND password=%s"
+            values = (username, password)
+            cursor.execute(query, values)
+            user_data = cursor.fetchone()
+            cursor.close()
+            return user_data[0] if user_data else None
+        except Error as e:
+            print(f"Error authenticating user: {e}")
+            return None
 
     # Method to update translations completed for a user
     def update_translations_completed(self, user_id):
@@ -57,18 +129,57 @@
     # Method to translate text for a logged-in user
     def translate_text(self):
         if not self.current_user:
-            pint("You need to log in first.")
-            
+            print("You need to log in first.")     
+        self.update_translations_completed(self.current_user_id)
 
-       
+    # Method to run the application
+    def run(self):
+        print("Welcome to TourLingo! Please create a user before logging in if it's your first time.")
 
-       
-           
-                
-                
-                
-                
-            
-              
+        while True:
+            print("Here is the Tourlingo Menu")
+            print("1. Create User")
+            print("2. Log in")
+            print("3. Translate text")
+            print("4. User Progress")
+            print("5. Exit")
+
+            choice = input("Enter your choice (1 to 5): ")
+
+            if choice == "1":
+                username = input("Enter your username: ")
+                password = input("Enter your password: ")
+                self.create_user(username, password)
+
+            elif choice == "2":
+                self.login()
+
+            elif choice == "3":
+                self.translate_text()
+
+            elif choice == "4":
+                if self.current_user_id:
+                    progress = self.get_user_progress(self.current_user_id)
+                    self.print_visual_border()
+                    print(f"Your progress: {progress} translations completed. Continue to level up your points.")
+                    self.print_visual_border()
+                else:
+                    self.print_visual_border()
+                    print("You need to log in first.")
+                    self.print_visual_border()
+
+            elif choice == "5":
+                print("Thank you for using TourLingo! We are here to assist you anytime.")
+                if self.db_connection.is_connected():
+                    self.db_connection.close()
+                break
+
+            else:
+                self.print_visual_border()
+                print("Invalid choice. Please enter a number from 1 to 5.")
+             
+
+
+ 
 
 
