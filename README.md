@@ -8,10 +8,10 @@
 4. **AUTHORS**
 ---
 
-> DESCRIPTION
+## DESCRIPTION  
 **Tourlingo is an app built by ALU STUDENTS who are in the fisrt year aas their summative of the second term, which it's purpose is to translate an text you give it. This app is built only with <mark>PYTHON LANGUAGE ONLY</mark>. It is indended to run on the TUI USER INTERFACE.**
 
-> FEATURES
+## FEATURES
 
 + CREATE USER
 + LOG in
