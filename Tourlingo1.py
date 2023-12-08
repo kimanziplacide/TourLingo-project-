@@ -129,8 +129,27 @@ class LanguageTranslatorAPP:
     # Method to translate text for a logged-in user
     def translate_text(self):
         if not self.current_user:
-            print("You need to log in first.")     
-        self.update_translations_completed(self.current_user_id)
+            self.print_visual_border()
+            print("You need to log in first.")
+            self.print_visual_border()
+        else:
+            text = input("Enter the text you wish to translate: ")
+
+            while True:
+                try:
+                    source_lang = input("Enter the source language (e.g., en for English): ")
+                    target_lang = input("Enter the target language (e.g., es for Spanish): ")
+                    translation = self.translator.translate(text, src=source_lang, dest=target_lang)
+                    break  # Break out of the loop if translation is successful
+                except ValueError:
+                    print("Please enter valid language abbreviations. Try again.")
+
+            self.print_visual_border()
+            print(f"Original Text ({source_lang}): {text}")
+            print(f"Translation ({target_lang}): {translation.text}\n")
+            self.print_visual_border()
+
+            self.update_translations_completed(self.current_user_id)
 
     # Method to run the application
     def run(self):
@@ -177,9 +196,8 @@ class LanguageTranslatorAPP:
             else:
                 self.print_visual_border()
                 print("Invalid choice. Please enter a number from 1 to 5.")
-             
+                self.print_visual_border()
 
-
- 
-
-
+if __name__ == "__main__":
+    app = LanguageTranslatorAPP()
+    app.run()
