@@ -1,0 +1,115 @@
+#!/usr/bin/python3
+from googletrans import Translator
+import mysql.connector
+
+class LanguageTranslatorAPP:
+    def __init__(self):
+        self.translator = Translator()
+        self.db_connection = self.initialize_database()
+        self.user_progress = {'translations_completed': 0}
+
+    def initialize_database(self):
+        return mysql.connector.connect(
+            host="localhost",
+            user="kabisa",
+            password="Argentina@10",
+            database="tourlingodbs"
+        )
+
+    def create_user(self, username, password):
+        cursor = self.db_connection.cursor()
+        query = "INSERT INTO data (username, password, translations_completed) VALUES (%s, %s, 0)"
+        values = (username, password)
+        cursor.execute(query, values)
+        self.db_connection.commit()
+        cursor.close()
+
+    def authenticate_user(self, username, password):
+        cursor = self.db_connection.cursor()
+        query = "SELECT * FROM data WHERE username=%s AND password=%s"
+        values = (username, password)
+        cursor.execute(query, values)
+        user_data = cursor.fetchone()
+        cursor.close()
+        return user_data
+
+    def update_translations_completed(self, username):
+        cursor = self.db_connection.cursor()
+        query_select = "SELECT translations_completed FROM data WHERE username = %s"
+        values_select = (username,)
+        cursor.execute(query_select, values_select)
+        current_translations_completed = cursor.fetchone()[0]
+
+        # Update the translations_completed in the database with the current value
+        query_update = "UPDATE data SET translations_completed = %s WHERE username = %s"
+        values_update = (current_translations_completed + 1, username)
+        cursor.execute(query_update, values_update)
+
+        self.db_connection.commit()
+        cursor.close()
+        return current_translations_completed
+
+    def get_user_progress(self, username):
+        cursor = self.db_connection.cursor()
+        query_select = "SELECT translations_completed FROM data WHERE username = %s"
+        values_select = (username,)
+        cursor.execute(query_select, values_select)
+        current_translations_completed = cursor.fetchone()[0]
+        cursor.close()
+        return current_translations_completed
+
+    def translate_text(self):
+        username_to_authenticate = input("Enter your username for authentication: ")
+        password_to_authenticate = input("Enter your password for authentication: ")
+        authenticated_user = self.authenticate_user(username_to_authenticate, password_to_authenticate)
+
+        if authenticated_user:
+            text = input("Enter the text you wish to translate: ")
+
+            while True:
+                try:
+                    source_lang = input("Enter the source language (e.g., en for English): ")
+                    target_lang = input("Enter the target language (e.g., es for Spanish): ")
+                    translation = self.translator.translate(text, src=source_lang, dest=target_lang)
+                    break  # Break out of the loop if translation is successful
+                except ValueError:
+                    print("Please, these language abbreviations are not valid. Try again.")
+
+            print(f"\nOriginal Text ({source_lang}): {text}")
+            print(f"Translation ({target_lang}): {translation.text}\n")
+
+            self.user_progress['translations_completed'] += 1
+            self.update_translations_completed(username_to_authenticate)
+        else:
+            print("Authentication failed. Check your credentials.")
+
+    def run(self):
+        name = input("Welcome on TourLingo!!! We are here for you. What is your name:")
+        while True:
+            print("Here is the Menu")
+            print("1. Translate Text")
+            print("2. Create user")
+            print("3. User Progress")
+            print("4. Exit")
+            choice = input(f"{name}!! Enter your choice (1 to 4): ")
+
+            if choice == "1":
+                self.translate_text()
+            elif choice == "2":
+                username = input("Enter your username: ")
+                password = input("Enter your password: ")
+                self.create_user(username, password)
+                print("User created successfully!")
+            elif choice == "3":
+                progress = self.get_user_progress(username_to_authenticate)
+                print(f"Your progress: {progress} translations completed.")
+            elif choice == "4":
+                print("Thank you for using TourLingo, anytime we are here to assist.")
+                self.db_connection.close()
+                break
+            else:
+                print("Invalid choice. Please enter a number from 1 to 4.")
+
+if __name__ == "__main__":
+    app = LanguageTranslatorAPP()
+    app.run()
